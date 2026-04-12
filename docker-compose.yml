@@ -55,6 +55,27 @@ services:
         limits:
           memory: 256M
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: build/app/Dockerfile
+    container_name: filestream-scheduler
+    restart: always
+    volumes:
+      - ./applications:/var/www/html
+    networks:
+      - filestream-network
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    command: ["php", "artisan", "schedule:work"]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 networks:
   filestream-network:
     driver: bridge

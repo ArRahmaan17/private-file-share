@@ -1,0 +1,4 @@
+data/logs/*
+data/redis/*
+data/db/*
+PLAN.md

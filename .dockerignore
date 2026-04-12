@@ -1,0 +1,11 @@
+.git
+.env
+applications/vendor
+applications/storage
+applications/bootstrap/cache
+docker-compose.yml
+PLAN.md
+README.md
+data
+node_modules
+dist

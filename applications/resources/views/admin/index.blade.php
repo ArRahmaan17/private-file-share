@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <x-head />
+    <x-head title="Dashboard - FileStream Admin" description="Monitor and manage active file transfers and system storage." />
     <style>
         *,
         *::before,

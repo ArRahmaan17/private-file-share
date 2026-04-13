@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <x-head />
+    <x-head title="FileStream - Simple, Secure File Sharing" description="High-performance, ephemeral file sharing with 1-hour expiration and password protection." />
     <style>
         *,
         *::before,

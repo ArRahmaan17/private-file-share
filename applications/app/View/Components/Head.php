@@ -8,12 +8,16 @@ use Illuminate\View\Component;
 
 class Head extends Component
 {
+    public string $title;
+    public string $description;
+
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(string $title = 'FileStream - Simple, Secure File Sharing', string $description = 'High-performance, secure file sharing with glassmorphism aesthetic.')
     {
-        //
+        $this->title = $title;
+        $this->description = $description;
     }
 
     /**

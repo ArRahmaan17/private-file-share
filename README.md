@@ -4,8 +4,8 @@
 
 ![Premium UI](https://img.shields.io/badge/Design-Glassmorphism-blueviolet)
 ![Status](https://img.shields.io/badge/Status-Production--Ready-success)
-![PHP](https://img.shields.io/badge/PHP-8.4-777bb4)
-![Laravel](https://img.shields.io/badge/Laravel-11-ff2d20)
+![PHP](https://img.shields.io/badge/PHP-8.3+-777bb4)
+![Laravel](https://img.shields.io/badge/Laravel-13-ff2d20)
 
 ---
 
@@ -14,17 +14,17 @@
 ### 🛡️ Secure Sharing
 -   **Password Protection**: Add end-to-end optional passwords to any file.
 -   **Self-Destruct Mode**: Files can be set to automatically delete themselves immediately after the first successful download.
--   **Link Expiry**: All links expire automatically after 24 hours (configurable).
+-   **Link Expiry**: All links expire automatically after **1 hour** to maintain privacy and system health.
 
 ### ⚡ Advanced Upload System
 -   **1MB Chunked Uploads**: Supports large file transfers (up to 110MB) by splitting files into sequential chunks—improving reliability on unstable networks.
 -   **Real-time Progress**: High-fidelity progress bars showing overall upload state from 0% to 100%.
--   **Manual Control**: Explicit "Upload" button flow to prevent accidental selections.
+-   **System Quota**: Hard cap on total storage (default **5GB**) to protect the host environment.
 
 ### 🎨 Premium User Experience
 -   **Glassmorphism aesthetic**: Modern "Frosted Glass" UI with ambient atmospheric backgrounds and smooth micro-animations.
--   **No Frame Bloat**: Built using high-performance Vanilla CSS and minimal JavaScript dependencies.
--   **Fully Responsive**: Seamless experience across mobile, tablet, and desktop devices.
+-   **Rich Meta Tags**: Full Open Graph (OG) and Twitter card support for beautiful link previews.
+-   **High Performance**: Minimal JavaScript, optimized CSS, and Blade X-Components for a modular architecture.
 
 ### 📊 Administrative Dashboard
 -   **Live Metrics**: Real-time monitoring of disk usage, total file count, and storage availability.
@@ -34,10 +34,10 @@
 ---
 
 ## 🛠️ Technology Stack
--   **Backend**: Laravel 11 (PHP 8.4-FPM Alpine)
+-   **Backend**: Laravel 13 (PHP 8.3-FPM Alpine)
 -   **Web Server**: Nginx (Alpine)
 -   **Database**: SQLite (default, optimized for container portability)
--   **Frontend**: Vanilla CSS, Blade Templates, Raw XHR for chunking logic.
+-   **Resource Managed**: Hardened with Docker `deploy.resources` limits (CPU/RAM).
 
 ---
 
@@ -52,12 +52,12 @@ Ensure you have [Docker](https://www.docker.com/) and [Docker Compose](https://d
     ```
 
 2.  **Configure Environment**:
-    Edit the `.env` file (or create one):
+    Edit the `applications/.env` file:
     ```env
     APP_NAME=FileStream
     APP_ENV=production
-    ADMIN_USERNAME=admin
     ADMIN_PASSWORD=your_secure_password
+    TOTAL_STORAGE_LIMIT_GB=5
     ```
 
 3.  **Launch**:
@@ -67,20 +67,17 @@ Ensure you have [Docker](https://www.docker.com/) and [Docker Compose](https://d
 
 4.  **Access**:
     -   **Homepage**: `http://localhost`
-    -   **Admin Panel**: `http://localhost/admin`
+    -   **Admin Panel**: `http://localhost/admin` (Password protected)
 
 ---
 
 ## ⚙️ Configuration
 
-### Upload Limits
-The default limit is set to **110MB**. To increase this:
-1. Update `post_max_size` and `upload_max_filesize` in `./build/app/php.ini`.
-2. Update the frontend limit in `resources/views/welcome.blade.php`.
-3. Update the backend validation in `FileController.php`.
+### Resource Limits (Docker)
+The `app` container is limited to **0.5 CPU** and **512MB RAM** by default. Adjust these in `docker-compose.yml` if needed.
 
-### Storage Cleanup
-The application includes a disk-safety check that prevents uploads if storage is `< 10%` free. Files are automatically cleaned up when they expire.
+### Storage Quota
+The application enforces a global storage limit defined by `TOTAL_STORAGE_LIMIT_GB` in your `.env`. Exceeding this will return a `507 Insufficient Storage` error to users.
 
 ---
 

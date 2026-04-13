@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <x-head />
+    <x-head title="Admin Login - FileStream" description="Secure access to the FileStream management dashboard." />
     <style>
         *,
         *::before,

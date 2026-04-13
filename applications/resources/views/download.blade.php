@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <x-head />
+    <x-head title="Download File - FileStream" description="Securely download shared files with encryption and self-destruct options." />
     <style>
         *,
         *::before,

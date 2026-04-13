@@ -2,10 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileStream - Simple, Secure File Sharing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <x-head />
     <style>
         *,
         *::before,
@@ -508,7 +505,7 @@
                 </svg>
             </div>
             <h1>FileStream</h1>
-            <p class="subtitle">Secure, ephemeral file sharing built for speed.</p>
+            <p class="subtitle">Secure, ephemeral (1-hour) file sharing built for speed.</p>
         </header>
 
         <main class="glass-panel">

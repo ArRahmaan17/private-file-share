@@ -89,4 +89,14 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Global Storage Quota
+    |--------------------------------------------------------------------------
+    |
+    | Maximum combined size of all uploads in GB.
+    |
+    */
+    'max_storage_gb' => env('TOTAL_STORAGE_LIMIT_GB', 5),
+
 ];

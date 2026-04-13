@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class CleanupExpiredFiles extends Command
 {
     protected $signature = 'files:cleanup';
-    protected $description = 'Delete files that have expired after 24 hours';
+    protected $description = 'Delete files that have expired after 1 hour';
 
     public function handle()
     {

@@ -26,6 +26,18 @@ class FileController extends Controller
             ], 507);
         }
 
+        // Global Storage Quota Check
+        $maxStorageGb = (float) config('filesystems.max_storage_gb', 5);
+        $maxStorageBytes = $maxStorageGb * 1024 * 1024 * 1024;
+        $currentStorageBytes = $this->getDirectorySize(storage_path('app/uploads'));
+
+        if (($currentStorageBytes + $request->file('chunk')->getSize()) > $maxStorageBytes) {
+            return response()->json([
+                'success' => false,
+                'message' => 'System storage quota reached. Please try again later.',
+            ], 507);
+        }
+
         $request->validate([
             'chunk' => 'required|file',
             'index' => 'required|integer',
@@ -81,7 +93,7 @@ class FileController extends Controller
                 'slug' => Str::random(10),
                 'password' => $request->password,
                 'is_one_time' => $request->boolean('is_one_time'),
-                'expires_at' => now()->addHours(24),
+                'expires_at' => now()->addHour(),
             ]);
 
             return response()->json([
@@ -151,5 +163,15 @@ class FileController extends Controller
     {
         Storage::delete($fileEntry->server_path);
         $fileEntry->delete();
+    }
+
+    private function getDirectorySize($path)
+    {
+        $size = 0;
+        if (!is_dir($path)) return 0;
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path)) as $file) {
+            $size += $file->getSize();
+        }
+        return $size;
     }
 }

@@ -5,6 +5,7 @@
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
+<meta property="og:logo" content="{{ asset('favicon.ico') }}">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">

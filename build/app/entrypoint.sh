@@ -8,6 +8,7 @@ cd /var/www/html
 rm -f bootstrap/cache/*.php
 php artisan key:generate --force
 php artisan package:discover --ansi
+php artisan migrate
 php artisan schedule:work --no-interaction --verbose &
 
 exec "$@"

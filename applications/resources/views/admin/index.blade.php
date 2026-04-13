@@ -102,7 +102,7 @@
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 32px 28px 64px;
+            padding: 32px 16px 64px;
         }
 
         /* ---- Topbar ---- */
@@ -383,6 +383,10 @@
 
         .files-table tbody tr:hover {
             background: var(--bg-surface-hover);
+        }
+
+        .files-table thead th {
+            color: var(--text-primary);
         }
 
         .files-table td {
@@ -693,7 +697,8 @@
             <div class="topbar-brand">
                 <div class="topbar-logo">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                 </div>
                 <div class="topbar-title">File<span>Stream</span></div>
@@ -708,13 +713,13 @@
         </nav>
 
         {{-- Toast --}}
-        @if(session('success'))
-        <div class="toast toast-success">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {{ session('success') }}
-        </div>
+        @if (session('success'))
+            <div class="toast toast-success">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {{ session('success') }}
+            </div>
         @endif
 
         {{-- Stats --}}
@@ -722,7 +727,8 @@
             <div class="stat-card">
                 <div class="stat-icon blue">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
                 <div class="stat-value">{{ $files->count() }}</div>
@@ -731,16 +737,19 @@
             <div class="stat-card">
                 <div class="stat-icon green">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
                     </svg>
                 </div>
                 <div class="stat-value">
-                    @if($totalFileSize >= 1073741824)
-                    {{ number_format($totalFileSize / 1073741824, 1) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)"> GB</small>
+                    @if ($totalFileSize >= 1073741824)
+                        {{ number_format($totalFileSize / 1073741824, 1) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)">
+                            GB</small>
                     @elseif($totalFileSize >= 1048576)
-                    {{ number_format($totalFileSize / 1048576, 1) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)"> MB</small>
+                        {{ number_format($totalFileSize / 1048576, 1) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)">
+                            MB</small>
                     @else
-                    {{ number_format($totalFileSize / 1024, 0) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)"> KB</small>
+                        {{ number_format($totalFileSize / 1024, 0) }}<small style="font-size:14px;font-weight:500;color:var(--text-secondary)"> KB</small>
                     @endif
                 </div>
                 <div class="stat-label">Total Upload Size</div>
@@ -748,7 +757,8 @@
             <div class="stat-card">
                 <div class="stat-icon amber">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                 </div>
                 <div class="stat-value">{{ $files->where('password', '!=', null)->count() }}</div>
@@ -764,7 +774,9 @@
                 <div class="stat-label">Disk Used</div>
                 <div style="margin-top:10px">
                     <div class="storage-bar-bg">
-                        <div class="storage-bar-fill" style="width: {{ $diskUsedPercent }}%; background: {{ $diskUsedPercent > 85 ? 'var(--red)' : ($diskUsedPercent > 60 ? 'var(--amber)' : 'var(--green)') }};"></div>
+                        <div class="storage-bar-fill"
+                            style="width: {{ $diskUsedPercent }}%; background: {{ $diskUsedPercent > 85 ? 'var(--red)' : ($diskUsedPercent > 60 ? 'var(--amber)' : 'var(--green)') }};">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -777,113 +789,120 @@
                 <span class="badge">{{ $files->count() }} {{ Str::plural('file', $files->count()) }}</span>
             </div>
 
-            @if($files->isEmpty())
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                    </svg>
+            @if ($files->isEmpty())
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                    </div>
+                    <div class="empty-title">No files uploaded yet</div>
+                    <div class="empty-desc">Upload a file from the homepage to see it here.</div>
                 </div>
-                <div class="empty-title">No files uploaded yet</div>
-                <div class="empty-desc">Upload a file from the homepage to see it here.</div>
-            </div>
             @else
-            <div class="table-scroll">
-                <table class="files-table">
-                    <thead>
-                        <tr>
-                            <th>File</th>
-                            <th>Status</th>
-                            <th>Expiration</th>
-                            <th style="width:120px">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($files as $file)
-                        @php
-                        $hoursLeft = now()->diffInHours($file->expires_at, false);
-                        $dotClass = $hoursLeft > 12 ? 'live' : ($hoursLeft > 3 ? 'warn' : 'danger');
-                        @endphp
-                        <tr>
-                            <td>
-                                <div class="file-info">
-                                    <div class="file-icon">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <div class="file-name">{{ $file->original_name }}</div>
-                                        <div class="file-slug">{{ $file->slug }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="badge-row">
-                                    @if($file->password)
-                                    <span class="badge-pill badge-indigo">🔒 Protected</span>
-                                    @endif
-                                    @if($file->is_one_time)
-                                    <span class="badge-pill badge-amber">⚡ One-time</span>
-                                    @endif
-                                    @if(!$file->password && !$file->is_one_time)
-                                    <span class="badge-pill" style="background:var(--bg-surface-hover);color:var(--text-secondary)">Public</span>
-                                    @endif
-                                </div>
-                            </td>
-                            <td>
-                                <form action="{{ route('admin.update', $file->id) }}" method="POST" class="expiry-form">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="datetime-local" name="expires_at"
-                                        value="{{ $file->expires_at->format('Y-m-d\TH:i') }}"
-                                        class="expiry-input">
-                                    <button type="submit" class="expiry-save">Save</button>
-                                </form>
-                                <div class="expiry-meta">
-                                    <span class="expiry-countdown">
-                                        <span class="expiry-dot {{ $dotClass }}"></span>
-                                        {{ $file->expires_at->diffForHumans() }}
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="action-group">
-                                    <div class="tooltip-wrap">
-                                        <a href="{{ route('show', $file->slug) }}" target="_blank" class="action-btn view" title="View">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                            </svg>
-                                        </a>
-                                        <span class="tooltip">Open link</span>
-                                    </div>
-                                    <div class="tooltip-wrap">
-                                        <button class="action-btn copy" onclick="copySlug('{{ route('show', $file->slug) }}', this)" title="Copy link">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                            </svg>
-                                        </button>
-                                        <span class="tooltip">Copy link</span>
-                                    </div>
-                                    <div class="tooltip-wrap">
-                                        <form action="{{ route('admin.destroy', $file->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Permanently delete this file?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="action-btn delete" title="Delete">
+                <div class="table-scroll">
+                    <table class="files-table">
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Status</th>
+                                <th>Expiration</th>
+                                <th style="width:120px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($files as $file)
+                                @php
+                                    $hoursLeft = now()->diffInHours($file->expires_at, false);
+                                    $dotClass = $hoursLeft > 12 ? 'live' : ($hoursLeft > 3 ? 'warn' : 'danger');
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <div class="file-info">
+                                            <div class="file-icon">
                                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
-                                            </button>
+                                            </div>
+                                            <div>
+                                                <div class="file-name">{{ $file->original_name }}</div>
+                                                <div class="file-slug">{{ $file->slug }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="badge-row">
+                                            @if ($file->password)
+                                                <span class="badge-pill badge-indigo">🔒 Protected</span>
+                                            @endif
+                                            @if ($file->is_one_time)
+                                                <span class="badge-pill badge-amber">⚡ One-time</span>
+                                            @endif
+                                            @if (!$file->password && !$file->is_one_time)
+                                                <span class="badge-pill"
+                                                    style="background:var(--bg-surface-hover);color:var(--text-secondary)">Public</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.update', $file->id) }}" method="POST" class="expiry-form">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="datetime-local" name="expires_at" value="{{ $file->expires_at->format('Y-m-d\TH:i') }}"
+                                                class="expiry-input">
+                                            <button type="submit" class="expiry-save">Save</button>
                                         </form>
-                                        <span class="tooltip">Delete file</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                        <div class="expiry-meta">
+                                            <span class="expiry-countdown">
+                                                <span class="expiry-dot {{ $dotClass }}"></span>
+                                                {{ $file->expires_at->diffForHumans() }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-group">
+                                            <div class="tooltip-wrap">
+                                                <a href="{{ route('show', $file->slug) }}" target="_blank" class="action-btn view" title="View">
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
+                                                </a>
+                                                <span class="tooltip">Open link</span>
+                                            </div>
+                                            <div class="tooltip-wrap">
+                                                <button class="action-btn copy" onclick="copySlug('{{ route('show', $file->slug) }}', this)"
+                                                    title="Copy link">
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                                    </svg>
+                                                </button>
+                                                <span class="tooltip">Copy link</span>
+                                            </div>
+                                            <div class="tooltip-wrap">
+                                                <form action="{{ route('admin.destroy', $file->id) }}" method="POST" style="display:inline"
+                                                    onsubmit="return confirm('Permanently delete this file?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="action-btn delete" title="Delete">
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                                <span class="tooltip">Delete file</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
         </div>
     </div>

@@ -67,29 +67,6 @@ services:
           cpus: '0.10'
           memory: 128M
 
-  scheduler:
-    build:
-      context: .
-      dockerfile: build/app/Dockerfile
-    container_name: filestream-scheduler
-    restart: always
-    volumes:
-      - ./applications:/var/www/html
-      - /var/www/html/vendor
-    networks:
-      - filestream-network
-    depends_on:
-      db:
-        condition: service_healthy
-      app:
-        condition: service_started
-    command: ["php", "artisan", "schedule:work"]
-    deploy:
-      resources:
-        limits:
-          cpus: '0.10'
-          memory: 256M
-
 networks:
   filestream-network:
     driver: bridge

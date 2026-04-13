@@ -9,3 +9,5 @@ README.md
 data
 node_modules
 dist
+.gitignore
+.github/

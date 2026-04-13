@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <x-head title="FileStream - Simple, Secure File Sharing" description="High-performance, ephemeral file sharing with 1-hour expiration and password protection." />
+    <x-head title="FileStream - Simple, Secure File Sharing"
+        description="High-performance, ephemeral file sharing with 1-hour expiration and password protection." />
     <style>
         *,
         *::before,
@@ -406,6 +407,8 @@
 
         .link-copier {
             display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 24px;
         }
@@ -415,7 +418,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 0 16px;
+            padding: 16px;
             color: var(--text-primary);
             font-size: 14px;
             outline: none;
@@ -514,28 +517,39 @@
                 <div id="drop-zone" class="drop-zone">
                     <div class="drop-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                     </div>
                     <div class="drop-title">Drop your file here</div>
                     <div class="drop-desc">or click to browse (Max 110MB)</div>
-                    <input type="file" id="file-input" class="hidden" accept=".pdf,.zip,.rar,.7z,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt,.csv,.mp4,.mp3">
+                    <input type="file" id="file-input" class="hidden"
+                        accept=".pdf,.zip,.rar,.7z,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt,.csv,.mp4,.mp3">
                 </div>
 
                 <!-- Selected File Preview (Hidden by default) -->
-                <div id="file-preview-wrap" class="hidden" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 32px; transition: all 0.3s ease;">
+                <div id="file-preview-wrap" class="hidden"
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 32px; transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center; gap: 16px; overflow: hidden;">
-                        <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--bg-card-hover); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="color: var(--accent);">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        <div
+                            style="width: 48px; height: 48px; border-radius: 12px; background: var(--bg-card-hover); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                                style="color: var(--accent);">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                         </div>
                         <div style="overflow: hidden; text-align: left;">
-                            <div id="selected-file-name" style="font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; color: var(--text-primary);">filename.pdf</div>
+                            <div id="selected-file-name"
+                                style="font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; color: var(--text-primary);">
+                                filename.pdf</div>
                             <div id="selected-file-size" style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">2.4 MB</div>
                         </div>
                     </div>
-                    <button type="button" id="clear-file-btn" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 8px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.color='var(--red)'; this.style.background='var(--bg-card-hover)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='none'">
+                    <button type="button" id="clear-file-btn"
+                        style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 8px; border-radius: 50%; transition: all 0.2s;"
+                        onmouseover="this.style.color='var(--red)'; this.style.background='var(--bg-card-hover)'"
+                        onmouseout="this.style.color='var(--text-muted)'; this.style.background='none'">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -562,7 +576,9 @@
                     </div>
                 </div>
 
-                <button type="button" id="start-upload-btn" class="btn-primary" style="width: 100%; margin-top: 24px; opacity: 0.5; pointer-events: none; justify-content: center; display: flex; align-items: center; gap: 10px;">Select a file to upload</button>
+                <button type="button" id="start-upload-btn" class="btn-primary"
+                    style="width: 100%; margin-top: 24px; opacity: 0.5; pointer-events: none; justify-content: center; display: flex; align-items: center; gap: 10px;">Select
+                    a file to upload</button>
             </div>
 
             <!-- Stage 2: Progress -->
@@ -665,7 +681,8 @@
             const btn = document.getElementById('start-upload-btn');
             btn.style.opacity = '1';
             btn.style.pointerEvents = 'auto';
-            btn.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload File';
+            btn.innerHTML =
+                '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload File';
         }
 
         document.getElementById('clear-file-btn').onclick = (e) => {
@@ -721,7 +738,7 @@
                 formData.append('_token', '{{ csrf_token() }}');
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', '{{ route("upload") }}', true);
+                xhr.open('POST', '{{ route('upload') }}', true);
 
                 xhr.upload.onprogress = (e) => {
                     if (e.lengthComputable) {

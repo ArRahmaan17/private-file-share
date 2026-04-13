@@ -26,3 +26,5 @@
 <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}" />
 <meta name="apple-mobile-web-app-title" content="FileStream" />
 <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "577c7093fb1f474c96b4789473cb2432"}'></script><!-- End Cloudflare Web Analytics -->

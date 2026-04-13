@@ -9,6 +9,7 @@ rm -f bootstrap/cache/*.php &
 php artisan config:clear &
 php artisan cache:clear &
 php artisan route:clear &
+php artisan migrate &
 php artisan schedule:work --no-interaction --verbose &
 
 exec "$@"

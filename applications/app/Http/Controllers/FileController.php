@@ -139,13 +139,11 @@ class FileController extends Controller
         }
 
         if ($fileEntry->is_one_time) {
-            $disk = Storage::disk();
-            
             // Check if we are on local disk to use deleteFileAfterSend
             $isLocal = config('filesystems.disks.' . config('filesystems.default') . '.driver') === 'local';
 
             if ($isLocal) {
-                $response = response()->download(storage_path('app/' . $fileEntry->server_path), $fileEntry->original_name)
+                $response = response()->download(storage_path('app/private/' . $fileEntry->server_path), $fileEntry->original_name)
                     ->deleteFileAfterSend(true);
             } else {
                 $response = Storage::download($fileEntry->server_path, $fileEntry->original_name);

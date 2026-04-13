@@ -1,5 +1,5 @@
 # Stage 1: Composer build
-FROM composer:latest as composer_stage
+FROM composer:latest AS composer-builder
 WORKDIR /app
 # Copy only composer files to leverage Docker cache
 COPY applications/composer.json applications/composer.lock ./
@@ -13,7 +13,7 @@ RUN composer install \
     --prefer-dist
 
 # Stage 2: Runtime
-FROM php:8.4-fpm-alpine as app
+FROM php:8.4-fpm-alpine AS php-builder
 
 # Set working directory
 WORKDIR /var/www/html
@@ -47,10 +47,10 @@ RUN apk add --no-cache \
 COPY applications /var/www/html
 
 # Copy vendor from composer stage
-COPY --from=composer_stage /app/vendor /var/www/html/vendor
+COPY --from=composer-builder /app/vendor /var/www/html/vendor
 
 # Reuse Composer from the builder image to avoid a second network fetch
-COPY --from=composer_stage /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer-builder /usr/bin/composer /usr/local/bin/composer
 
 # Build a production autoloader and package manifest inside the image
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/app/uploads bootstrap/cache \
@@ -68,9 +68,7 @@ COPY build/app/entrypoint.sh /usr/local/bin/entrypoint
 
 RUN chmod +x /usr/local/bin/entrypoint
 
-# Switch to non-root user
-USER www-data
 
 ENTRYPOINT ["entrypoint"]
-EXPOSE 9000
+
 CMD ["php-fpm"]

@@ -795,8 +795,7 @@
                 formData.append('_token', '{{ csrf_token() }}');
 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', '{{ route('
-                    upload ') }}', true);
+                xhr.open('POST', `{{ route('upload') }}`, true);
 
                 xhr.upload.onprogress = (e) => {
                     if (e.lengthComputable) {

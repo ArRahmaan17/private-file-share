@@ -11,7 +11,21 @@ class FileController extends Controller
 {
     public function index()
     {
-        return view('welcome');
+        $files = FileEntry::all();
+        $totalFiles = $files->count();
+        $totalSize = 0;
+
+        foreach ($files as $file) {
+            try {
+                if (Storage::exists($file->server_path)) {
+                    $totalSize += Storage::size($file->server_path);
+                }
+            } catch (\Throwable $e) {
+                // Ignore missing files
+            }
+        }
+
+        return view('welcome', compact('totalFiles', 'totalSize'));
     }
 
     public function upload(Request $request)

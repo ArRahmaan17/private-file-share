@@ -16,7 +16,8 @@
         <main class="glass-panel">
             <div class="file-icon">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 11v6m-3-3h6" />
                 </svg>
             </div>
@@ -24,23 +25,22 @@
             <h1 title="{{ $fileEntry->original_name }}">{{ $fileEntry->original_name }}</h1>
             <p class="expiry">Expires {{ $fileEntry->expires_at->diffForHumans() }}</p>
 
-            @if($fileEntry->is_one_time)
-            <div class="badge">Self-Destructs After Download</div>
+            @if ($fileEntry->is_one_time)
+                <div class="badge">Self-Destructs After Download</div>
             @endif
 
-            <form action="{{ route('download', $fileEntry->slug) }}" method="POST">
+            <form action="{{ route('download', $fileEntry->slug) }}" method="POST" target="_blank">
                 @csrf
 
-                @if($fileEntry->password)
-                <div class="form-wrap">
-                    <label for="password" class="label">Password Required</label>
-                    <input type="password" id="password" name="password" required
-                        class="input-field {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                        placeholder="Enter password to decrypt">
-                    @error('password')
-                    <p class="error-text">{{ $message }}</p>
-                    @enderror
-                </div>
+                @if ($fileEntry->password)
+                    <div class="form-wrap">
+                        <label for="password" class="label">Password Required</label>
+                        <input type="password" id="password" name="password" required
+                            class="input-field {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="Enter password to decrypt">
+                        @error('password')
+                            <p class="error-text">{{ $message }}</p>
+                        @enderror
+                    </div>
                 @endif
 
                 <button type="submit" class="btn-dl">

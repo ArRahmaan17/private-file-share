@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\FileEntry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
+    private const MAX_UPLOAD_BYTES = 1024 * 1024 * 1024; // 1 GB
+    private const MAX_MISSING_CHUNK_ATTEMPTS = 15;
+
     public function index()
     {
         $files = FileEntry::all();
@@ -43,7 +47,7 @@ class FileController extends Controller
         // Global Storage Quota Check
         $maxStorageGb = (float) config('filesystems.max_storage_gb', 5);
         $maxStorageBytes = $maxStorageGb * 1024 * 1024 * 1024;
-        $currentStorageBytes = $this->getDirectorySize(storage_path('app/uploads'));
+        $currentStorageBytes = $this->getDirectorySize(Storage::disk('local')->path('uploads'));
 
         if (($currentStorageBytes + $request->file('chunk')->getSize()) > $maxStorageBytes) {
             return response()->json([
@@ -67,10 +71,24 @@ class FileController extends Controller
         $totalChunks = (int) $request->total_chunks;
         $originalName = $request->original_name;
         $tempPath = "chunks/{$uuid}";
+        $disk = Storage::disk('local');
+
+        if ($index < 0 || $totalChunks < 1 || $index >= $totalChunks) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid chunk sequence.',
+            ], 422);
+        }
+
+        if ($index > 0 && !$disk->exists($tempPath)) {
+            return $this->rejectMissingChunkSession($uuid, $request->ip());
+        }
+
+        Cache::forget($this->missingChunkAttemptKey($uuid, $request->ip()));
 
         // Save chunk
         $chunk = $request->file('chunk');
-        Storage::disk('local')->append($tempPath, file_get_contents($chunk->getRealPath()), null);
+        $this->appendChunkToTempFile($tempPath, $chunk->getRealPath(), $index === 0);
 
         // If it was the last chunk
         if ($index + 1 === $totalChunks) {
@@ -92,12 +110,12 @@ class FileController extends Controller
                 ], 422);
             }
 
-            // Size check (110MB)
-            if (Storage::size($finalPath) > 110 * 1024 * 1024) {
+            // Size check (1GB)
+            if (Storage::size($finalPath) > self::MAX_UPLOAD_BYTES) {
                 Storage::delete($finalPath);
                 return response()->json([
                     'success' => false,
-                    'message' => 'File exceeds 110MB limit.',
+                    'message' => 'File exceeds 1GB limit.',
                 ], 413);
             }
 
@@ -175,6 +193,60 @@ class FileController extends Controller
     {
         Storage::delete($fileEntry->server_path);
         $fileEntry->delete();
+    }
+
+    private function rejectMissingChunkSession(string $uuid, ?string $ip)
+    {
+        $cacheKey = $this->missingChunkAttemptKey($uuid, $ip);
+        $attempts = Cache::store()->add($cacheKey, 0, now()->addMinutes(15))
+            ? 0
+            : (int) Cache::get($cacheKey, 0);
+
+        $attempts = Cache::increment($cacheKey);
+
+        $status = $attempts >= self::MAX_MISSING_CHUNK_ATTEMPTS ? 429 : 409;
+        $message = $attempts >= self::MAX_MISSING_CHUNK_ATTEMPTS
+            ? 'Upload session rejected after 15 invalid chunk attempts. Start again.'
+            : 'Upload session not found. Restart the upload.';
+
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+        ], $status);
+    }
+
+    private function missingChunkAttemptKey(string $uuid, ?string $ip): string
+    {
+        return 'upload:missing-chunk:' . $uuid . ':' . sha1($ip ?? 'unknown');
+    }
+
+    private function appendChunkToTempFile(string $tempPath, string $sourcePath, bool $truncate = false): void
+    {
+        $destinationPath = Storage::disk('local')->path($tempPath);
+        $destinationDir = dirname($destinationPath);
+
+        if (!is_dir($destinationDir)) {
+            mkdir($destinationDir, 0755, true);
+        }
+
+        $source = fopen($sourcePath, 'rb');
+        $destination = fopen($destinationPath, $truncate ? 'wb' : 'ab');
+
+        if ($source === false || $destination === false) {
+            if (is_resource($source)) {
+                fclose($source);
+            }
+            if (is_resource($destination)) {
+                fclose($destination);
+            }
+
+            throw new \RuntimeException('Unable to write upload chunk.');
+        }
+
+        stream_copy_to_stream($source, $destination);
+
+        fclose($source);
+        fclose($destination);
     }
 
     private function getDirectorySize($path)

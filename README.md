@@ -17,12 +17,13 @@
 -   **Link Expiry**: All links expire automatically after **1 hour** to maintain privacy and system health.
 
 ### ⚡ Advanced Upload System
--   **1MB Chunked Uploads**: Supports large file transfers (up to 110MB) by splitting files into sequential chunks—improving reliability on unstable networks.
+-   **1MB Chunked Uploads**: Supports large file transfers (up to 1GB) by splitting files into sequential chunks—improving reliability on unstable networks.
 -   **Real-time Progress**: High-fidelity progress bars showing overall upload state from 0% to 100%.
 -   **System Quota**: Hard cap on total storage (default **5GB**) to protect the host environment.
 
 ### 🎨 Premium User Experience
 -   **Glassmorphism aesthetic**: Modern "Frosted Glass" UI with ambient atmospheric backgrounds and smooth micro-animations.
+-   **Recent Local Links**: The homepage keeps a browser-local list of recent generated share links for up to **1 hour**, including refresh recovery for the latest uploaded file on the same device.
 -   **Rich Meta Tags**: Full Open Graph (OG) and Twitter card support for beautiful link previews.
 -   **High Performance**: Minimal JavaScript, optimized CSS, and Blade X-Components for a modular architecture.
 
@@ -78,6 +79,12 @@ The `app` container is limited to **0.5 CPU** and **512MB RAM** by default. Adju
 
 ### Storage Quota
 The application enforces a global storage limit defined by `TOTAL_STORAGE_LIMIT_GB` in your `.env`. Exceeding this will return a `507 Insufficient Storage` error to users.
+
+### Upload Limits
+Single-file uploads are capped at **1GB** in application logic. The browser uploads files in **1MB chunks**, so the bundled PHP/Nginx request-size limits only need to be large enough for each chunk plus multipart overhead.
+
+### Browser Storage
+The homepage stores recent generated download links in browser `localStorage` for up to **1 hour** on the same device. The latest link is restored after refresh, and the recent-links list can be cleared directly from the homepage.
 
 ---
 
